@@ -3,36 +3,21 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>hello internet its me</title>
+    <title>Hello Inet</title>
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
-    <style>
-      body {
-        background-color: grey; /* Hintergrundfarbe grau */
-        color: white; /* Textfarbe weiß für besseren Kontrast */
-        font-family: Arial, sans-serif; /* Schriftart */
-        text-align: center; /* Text zentrieren */
-        margin: 0;
-        padding: 0;
-      }
-      h2 {
-        font-size: 36px; /* Schriftgröße für den Titel */
-        margin-top: 20px; /* Etwas Abstand nach oben */
-      }
-    </style>
   </head>
   <body>
-    <h2>Hello internet, it's me</h2>
-    <model-viewer src="cube_test.glb"
-                  ios-src="cube_test.usdz"
-                  alt="cube_test"
-                  ar
-                  auto-rotate
-                  camera-controls
-                  ar-modes="webxr scene-viewer quick-look" 
-                  environment-image="neutral">   
-    </model-viewer>
-
-    <script>
+<H2>Hello Inet</H2>
+  <model-viewer src="cube_test.glb"
+                ios-src="cube_test.usdz"
+                alt="cube_test"
+                ar
+                auto-rotate
+                camera-controls
+                ar-modes="webxr scene-viewer quick-look" 
+                environment-image="neutral">   
+  </model-viewer>
+ <script>
         async function checkARCoreCompatibility() {
             const modelViewer = document.getElementById('model-viewer');
             const isARCoreSupported = await navigator.xr.isSessionSupported('immersive-ar');
@@ -42,11 +27,6 @@
                 alert('Your device is not compatible with AR features. You can still view the 3D model.');
             }
         }
-
-        document.addEventListener('DOMContentLoaded', checkARCoreCompatibility);
-    </script>
-  </body>
-</html>
 
         document.addEventListener('DOMContentLoaded', checkARCoreCompatibility);
     </script>
