@@ -16,7 +16,14 @@
                 camera-controls
                 ar-modes="webxr scene-viewer quick-look" 
                 environment-image="neutral">   
-  </model-viewer>
+  <model-viewer src="3dscan.glb"
+                ios-src="3dscan.usdz"
+                alt="3dscan"
+                ar
+                auto-rotate
+                camera-controls
+                ar-modes="webxr scene-viewer quick-look" 
+                environment-image="neutral"> 
  <script>
         async function checkARCoreCompatibility() {
             const modelViewer = document.getElementById('model-viewer');
