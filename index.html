@@ -19,14 +19,15 @@
         font-size: 100px;
         text-align: center;
         animation: rotateText 5s linear infinite;
+        transform-origin: center; /* ensures the rotation happens around the center */
       }
 
       @keyframes rotateText {
         0% {
-          transform: rotate(0deg);
+          transform: rotateZ(0deg);
         }
         100% {
-          transform: rotate(360deg);
+          transform: rotateZ(360deg);
         }
       }
     </style>
@@ -52,8 +53,8 @@
               alert('Your device is not compatible with AR features. You can still view the 3D model.');
           }
       }
+
       document.addEventListener('DOMContentLoaded', checkARCoreCompatibility);
     </script>
   </body>
 </html>
-
