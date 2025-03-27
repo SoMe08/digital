@@ -1,33 +1,59 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>hello Inet</title>
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #f0f0f0;
+      }
+
+      h2 {
+        font-size: 100px;
+        text-align: center;
+        animation: rotateText 5s linear infinite;
+      }
+
+      @keyframes rotateText {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
   </head>
   <body>
-<H2>Hey Inet</H2>
-   <model-viewer src="moiscan.glb"
-                ios-src="moiscan.usdz"
-                alt="moiscan"
-                ar
-                auto-rotate
-                camera-controls
-                ar-modes="webxr scene-viewer quick-look" 
-                environment-image="neutral"> 
- <script>
-        async function checkARCoreCompatibility() {
-            const modelViewer = document.getElementById('model-viewer');
-            const isARCoreSupported = await navigator.xr.isSessionSupported('immersive-ar');
-            if (!isARCoreSupported) {
-                modelViewer.removeAttribute('ar');
-                modelViewer.removeAttribute('ar-modes');
-                alert('Your device is not compatible with AR features. You can still view the 3D model.');
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', checkARCoreCompatibility);
+    <h2>Hey Inet</h2>
+    <model-viewer src="moiscan.glb"
+                  ios-src="moiscan.usdz"
+                  alt="moiscan"
+                  ar
+                  auto-rotate
+                  camera-controls
+                  ar-modes="webxr scene-viewer quick-look" 
+                  environment-image="neutral"> 
+    </model-viewer>
+    <script>
+      async function checkARCoreCompatibility() {
+          const modelViewer = document.querySelector('model-viewer');
+          const isARCoreSupported = await navigator.xr.isSessionSupported('immersive-ar');
+          if (!isARCoreSupported) {
+              modelViewer.removeAttribute('ar');
+              modelViewer.removeAttribute('ar-modes');
+              alert('Your device is not compatible with AR features. You can still view the 3D model.');
+          }
+      }
+      document.addEventListener('DOMContentLoaded', checkARCoreCompatibility);
     </script>
-   </body>
+  </body>
 </html>
+
