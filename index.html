@@ -5,18 +5,69 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>hello Inet</title>
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+    <style>
+      /* Grundlegende Styles für das Layout */
+      body, html {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #f0f0f0;
+        overflow: hidden;
+      }
+
+      h2 {
+        position: absolute;
+        font-size: 3em;
+        font-weight: bold;
+        color: #333;
+        animation: rotateText 10s infinite linear;
+      }
+
+      /* Rotation der Schrift um die Z-Achse */
+      @keyframes rotateText {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* Modell-Viewer in der Mitte */
+      model-viewer {
+        width: 500px;
+        height: 500px;
+        animation: rotateModel 10s infinite linear;
+      }
+
+      /* Rotation des 3D-Modells */
+      @keyframes rotateModel {
+        from {
+          transform: rotateY(0deg);
+        }
+        to {
+          transform: rotateY(360deg);
+        }
+      }
+    </style>
   </head>
   <body>
-<H2>Hey Inet</H2>
-   <model-viewer src="nails.glb"
-                ios-src="nails.usdz"
-                alt="nails"
-                ar
-                auto-rotate
-                camera-controls
-                ar-modes="webxr scene-viewer quick-look" 
-                environment-image="neutral"> 
- <script>
+    <H2>Hey Inet</H2>
+    <model-viewer id="model-viewer"
+                  src="nails.glb"
+                  ios-src="nails.usdz"
+                  alt="nails"
+                  ar
+                  auto-rotate
+                  camera-controls
+                  ar-modes="webxr scene-viewer quick-look" 
+                  environment-image="neutral">
+    </model-viewer>
+
+    <script>
         async function checkARCoreCompatibility() {
             const modelViewer = document.getElementById('model-viewer');
             const isARCoreSupported = await navigator.xr.isSessionSupported('immersive-ar');
@@ -29,5 +80,5 @@
 
         document.addEventListener('DOMContentLoaded', checkARCoreCompatibility);
     </script>
-   </body>
-</html> 
+  </body>
+</html>
