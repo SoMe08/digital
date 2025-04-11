@@ -6,27 +6,62 @@
     <title>Nailsalon</title>
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
     <style>
-      /* Grundlegende Styles für das Layout */
+      /* Rosa Hintergrund mit Glitzer */
       body, html {
         margin: 0;
         padding: 0;
         height: 100%;
+        overflow: hidden;
+        background: linear-gradient(135deg, #ffc0cb, #ffe4e1);
         display: flex;
         justify-content: center;
         align-items: center;
-        background-color: #f0f0f0;
+        position: relative;
+      }
+
+      /* Glitzer-Effekt mit animierten Punkten */
+      .glitter {
+        position: absolute;
+        width: 100%;
+        height: 100%;
         overflow: hidden;
+        z-index: 0;
+      }
+
+      .sparkle {
+        position: absolute;
+        width: 4px;
+        height: 4px;
+        background: white;
+        border-radius: 50%;
+        opacity: 0.8;
+        animation: sparkle 3s infinite;
+      }
+
+      @keyframes sparkle {
+        0% {
+          transform: scale(1);
+          opacity: 0.8;
+        }
+        50% {
+          transform: scale(1.5);
+          opacity: 1;
+        }
+        100% {
+          transform: scale(1);
+          opacity: 0.8;
+        }
       }
 
       h2 {
         position: absolute;
         font-size: 3em;
         font-weight: bold;
-        color: #333;
+        color: #cc0066;
+        z-index: 2;
         animation: rotateText 10s infinite linear;
       }
 
-      /* Rotation der Schrift um die Z-Achse */
       @keyframes rotateText {
         from {
           transform: rotate(0deg);
@@ -36,14 +71,13 @@
         }
       }
 
-      /* Modell-Viewer in der Mitte */
       model-viewer {
         width: 500px;
         height: 500px;
         animation: rotateModel 10s infinite linear;
+        z-index: 2;
       }
 
-      /* Rotation des 3D-Modells */
       @keyframes rotateModel {
         from {
           transform: rotateY(0deg);
@@ -55,7 +89,10 @@
     </style>
   </head>
   <body>
-    <H2>Nailsalon</H2>
+    <div class="glitter" id="glitter-container"></div>
+
+    <h2>Nailsalon</h2>
+
     <model-viewer id="model-viewer"
                   src="bluenails.glb"
                   ios-src="bluenails.usdz"
@@ -68,17 +105,30 @@
     </model-viewer>
 
     <script>
-        async function checkARCoreCompatibility() {
-            const modelViewer = document.getElementById('model-viewer');
-            const isARCoreSupported = await navigator.xr.isSessionSupported('immersive-ar');
-            if (!isARCoreSupported) {
-                modelViewer.removeAttribute('ar');
-                modelViewer.removeAttribute('ar-modes');
-                alert('Your device is not compatible with AR features. You can still view the 3D model.');
-            }
-        }
+      async function checkARCoreCompatibility() {
+          const modelViewer = document.getElementById('model-viewer');
+          const isARCoreSupported = await navigator.xr?.isSessionSupported('immersive-ar');
+          if (!isARCoreSupported) {
+              modelViewer.removeAttribute('ar');
+              modelViewer.removeAttribute('ar-modes');
+              alert('Your device is not compatible with AR features. You can still view the 3D model.');
+          }
+      }
 
-        document.addEventListener('DOMContentLoaded', checkARCoreCompatibility);
+      document.addEventListener('DOMContentLoaded', () => {
+        checkARCoreCompatibility();
+
+        // Glitzer erzeugen
+        const glitterContainer = document.getElementById('glitter-container');
+        for (let i = 0; i < 100; i++) {
+          const sparkle = document.createElement('div');
+          sparkle.className = 'sparkle';
+          sparkle.style.left = Math.random() * 100 + 'vw';
+          sparkle.style.top = Math.random() * 100 + 'vh';
+          sparkle.style.animationDelay = Math.random() * 3 + 's';
+          glitterContainer.appendChild(sparkle);
+        }
+      });
     </script>
   </body>
 </html>
