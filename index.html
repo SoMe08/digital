@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Nailsalon</title>
   <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
   <style>
@@ -11,7 +11,7 @@
       padding: 0;
       height: 100%;
       overflow: hidden;
-      background: linear-gradient(135deg, #ffc0cb, #ffe4e1);
+      background: radial-gradient(ellipse at center, #ffeef3, #ffc0cb);
       display: flex;
       justify-content: center;
       align-items: center;
@@ -19,66 +19,63 @@
       font-family: 'Arial', sans-serif;
     }
 
-    /* Responsive Glitzer */
-    .glitter {
+    /* Schimmer & Glow Layer */
+    .shimmer-layer {
       position: absolute;
       width: 100%;
       height: 100%;
-      overflow: hidden;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.2) 1px, transparent 1px);
+      background-size: 3px 3px;
+      animation: shimmer 8s linear infinite;
+      opacity: 0.6;
       z-index: 0;
       pointer-events: none;
     }
 
-    .sparkle {
+    @keyframes shimmer {
+      0% { background-position: 0 0; }
+      100% { background-position: 100% 100%; }
+    }
+
+    .glow {
       position: absolute;
-      width: 4px;
-      height: 4px;
-      background: white;
-      border-radius: 50%;
-      opacity: 0;
-      box-shadow: 0 0 6px 3px rgba(255, 255, 255, 0.8);
-      animation: sparkle 1.5s infinite ease-in-out;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      background: radial-gradient(circle at 30% 40%, rgba(255,255,255,0.2), transparent 40%),
+                  radial-gradient(circle at 70% 60%, rgba(255,255,255,0.15), transparent 50%);
+      animation: glowMove 12s ease-in-out infinite alternate;
+      z-index: 0;
     }
 
-    @keyframes sparkle {
-      0% {
-        opacity: 0;
-        transform: scale(0.5) translateY(0);
-      }
-      50% {
-        opacity: 1;
-        transform: scale(1.5) translateY(-10px);
-      }
-      100% {
-        opacity: 0;
-        transform: scale(0.5) translateY(0);
-      }
+    @keyframes glowMove {
+      0% { background-position: 30% 40%, 70% 60%; }
+      100% { background-position: 60% 30%, 40% 70%; }
     }
 
-    /* Bling-Bling-Überschrift */
+    /* Überschrift mit weichem Glow */
     h2 {
       position: absolute;
-      font-size: clamp(1.5rem, 5vw, 3em); /* passt sich der Größe an */
+      font-size: clamp(2rem, 5vw, 3em);
       font-weight: bold;
-      color: #ff69b4;
-      text-shadow: 0 0 10px white, 0 0 20px #ff69b4, 0 0 30px white;
+      color: #d63384;
+      text-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
       z-index: 2;
-      animation: blinkText 1s infinite alternate;
-      text-align: center;
+      animation: softPulse 2.5s infinite ease-in-out;
     }
 
-    @keyframes blinkText {
-      0% {
+    @keyframes softPulse {
+      0%, 100% {
         opacity: 1;
-        text-shadow: 0 0 5px white, 0 0 10px #ff69b4;
+        text-shadow: 0 0 8px rgba(255,255,255,0.7);
       }
-      100% {
-        opacity: 0.7;
-        text-shadow: 0 0 20px white, 0 0 40px #ff69b4;
+      50% {
+        opacity: 0.85;
+        text-shadow: 0 0 16px rgba(255,255,255,0.9);
       }
     }
 
-    /* Modell-Viewer responsive */
+    /* Model-Viewer */
     model-viewer {
       width: 80vw;
       max-width: 500px;
@@ -89,17 +86,51 @@
     }
 
     @keyframes rotateModel {
-      from {
-        transform: rotateY(0deg);
+      from { transform: rotateY(0deg); }
+      to { transform: rotateY(360deg); }
+    }
+
+    /* SVG Herzchen */
+    .hearts-container {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .heart {
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      opacity: 0.6;
+      animation: floatHeart 12s linear infinite;
+      transform-origin: center;
+    }
+
+    @keyframes floatHeart {
+      0% {
+        transform: translateY(100vh) scale(0.5) rotate(0deg);
+        opacity: 0;
       }
-      to {
-        transform: rotateY(360deg);
+      30% {
+        opacity: 0.7;
+      }
+      100% {
+        transform: translateY(-10vh) scale(1.2) rotate(360deg);
+        opacity: 0;
       }
     }
   </style>
 </head>
 <body>
-  <div class="glitter" id="glitter-container"></div>
+  <!-- Schimmer & Glanz -->
+  <div class="shimmer-layer"></div>
+  <div class="glow"></div>
+
+  <!-- Funkelnde Herzchen -->
+  <div class="hearts-container" id="hearts-container"></div>
 
   <h2>Nailsalon</h2>
 
@@ -128,22 +159,33 @@
       }
     }
 
+    // Herz-Generator
+    function createHearts() {
+      const container = document.getElementById('hearts-container');
+      const colors = ['#fff', '#ffb6c1', '#ff69b4'];
+
+      for (let i = 0; i < 30; i++) {
+        const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        svg.setAttribute("viewBox", "0 0 24 24");
+        svg.classList.add("heart");
+        svg.style.left = Math.random() * 100 + 'vw';
+        svg.style.top = Math.random() * 100 + 'vh';
+        svg.style.animationDelay = Math.random() * 10 + 's';
+        svg.style.fill = colors[Math.floor(Math.random() * colors.length)];
+        svg.innerHTML = `
+          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5
+          2 5.42 4.42 3 7.5 3c1.74 0 3.41 1.01 4.5 2.09
+          C13.09 4.01 14.76 3 16.5 3
+          19.58 3 22 5.42 22 8.5
+          c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+        `;
+        container.appendChild(svg);
+      }
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
       checkARCoreCompatibility();
-
-      // Glitzer erzeugen
-      const glitterContainer = document.getElementById('glitter-container');
-      const sparkleCount = window.innerWidth < 768 ? 80 : 150;
-
-      for (let i = 0; i < sparkleCount; i++) {
-        const sparkle = document.createElement('div');
-        sparkle.className = 'sparkle';
-        sparkle.style.left = Math.random() * 100 + 'vw';
-        sparkle.style.top = Math.random() * 100 + 'vh';
-        sparkle.style.animationDelay = (Math.random() * 2) + 's';
-        sparkle.style.animationDuration = (1 + Math.random()) + 's';
-        glitterContainer.appendChild(sparkle);
-      }
+      createHearts();
     });
   </script>
 </body>
