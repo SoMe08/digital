@@ -1,135 +1,150 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nailsalon</title>
-    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
-    <style>
-      /* Rosa Hintergrund mit Glitzer */
-      body, html {
-        margin: 0;
-        padding: 0;
-        height: 100%;
-        overflow: hidden;
-        background: linear-gradient(135deg, #ffc0cb, #ffe4e1);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        position: relative;
-      }
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nailsalon</title>
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+      background: linear-gradient(135deg, #ffc0cb, #ffe4e1);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      font-family: 'Arial', sans-serif;
+    }
 
-      /* Glitzer-Effekt mit animierten Punkten */
-      .glitter {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-        z-index: 0;
-      }
+    /* Responsive Glitzer */
+    .glitter {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: 0;
+      pointer-events: none;
+    }
 
-      .sparkle {
-        position: absolute;
-        width: 4px;
-        height: 4px;
-        background: white;
-        border-radius: 50%;
-        opacity: 0.8;
-        animation: sparkle 3s infinite;
-      }
+    .sparkle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: white;
+      border-radius: 50%;
+      opacity: 0;
+      box-shadow: 0 0 6px 3px rgba(255, 255, 255, 0.8);
+      animation: sparkle 1.5s infinite ease-in-out;
+    }
 
-      @keyframes sparkle {
-        0% {
-          transform: scale(1);
-          opacity: 0.8;
+    @keyframes sparkle {
+      0% {
+        opacity: 0;
+        transform: scale(0.5) translateY(0);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.5) translateY(-10px);
+      }
+      100% {
+        opacity: 0;
+        transform: scale(0.5) translateY(0);
+      }
+    }
+
+    /* Bling-Bling-Überschrift */
+    h2 {
+      position: absolute;
+      font-size: clamp(1.5rem, 5vw, 3em); /* passt sich der Größe an */
+      font-weight: bold;
+      color: #ff69b4;
+      text-shadow: 0 0 10px white, 0 0 20px #ff69b4, 0 0 30px white;
+      z-index: 2;
+      animation: blinkText 1s infinite alternate;
+      text-align: center;
+    }
+
+    @keyframes blinkText {
+      0% {
+        opacity: 1;
+        text-shadow: 0 0 5px white, 0 0 10px #ff69b4;
+      }
+      100% {
+        opacity: 0.7;
+        text-shadow: 0 0 20px white, 0 0 40px #ff69b4;
+      }
+    }
+
+    /* Modell-Viewer responsive */
+    model-viewer {
+      width: 80vw;
+      max-width: 500px;
+      height: auto;
+      aspect-ratio: 1;
+      animation: rotateModel 10s infinite linear;
+      z-index: 2;
+    }
+
+    @keyframes rotateModel {
+      from {
+        transform: rotateY(0deg);
+      }
+      to {
+        transform: rotateY(360deg);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="glitter" id="glitter-container"></div>
+
+  <h2>Nailsalon</h2>
+
+  <model-viewer id="model-viewer"
+                src="bluenails.glb"
+                ios-src="bluenails.usdz"
+                alt="bluenails"
+                ar
+                auto-rotate
+                camera-controls
+                ar-modes="webxr scene-viewer quick-look"
+                environment-image="neutral">
+  </model-viewer>
+
+  <script>
+    async function checkARCoreCompatibility() {
+      const modelViewer = document.getElementById('model-viewer');
+      try {
+        const isARCoreSupported = await navigator.xr?.isSessionSupported('immersive-ar');
+        if (!isARCoreSupported) {
+          modelViewer.removeAttribute('ar');
+          modelViewer.removeAttribute('ar-modes');
         }
-        50% {
-          transform: scale(1.5);
-          opacity: 1;
-        }
-        100% {
-          transform: scale(1);
-          opacity: 0.8;
-        }
+      } catch (e) {
+        console.warn("AR-Kompatibilitätsprüfung nicht möglich:", e);
       }
+    }
 
-      h2 {
-        position: absolute;
-        font-size: 3em;
-        font-weight: bold;
-        color: #cc0066;
-        z-index: 2;
-        animation: rotateText 10s infinite linear;
+    document.addEventListener('DOMContentLoaded', () => {
+      checkARCoreCompatibility();
+
+      // Glitzer erzeugen
+      const glitterContainer = document.getElementById('glitter-container');
+      const sparkleCount = window.innerWidth < 768 ? 80 : 150;
+
+      for (let i = 0; i < sparkleCount; i++) {
+        const sparkle = document.createElement('div');
+        sparkle.className = 'sparkle';
+        sparkle.style.left = Math.random() * 100 + 'vw';
+        sparkle.style.top = Math.random() * 100 + 'vh';
+        sparkle.style.animationDelay = (Math.random() * 2) + 's';
+        sparkle.style.animationDuration = (1 + Math.random()) + 's';
+        glitterContainer.appendChild(sparkle);
       }
-
-      @keyframes rotateText {
-        from {
-          transform: rotate(0deg);
-        }
-        to {
-          transform: rotate(360deg);
-        }
-      }
-
-      model-viewer {
-        width: 500px;
-        height: 500px;
-        animation: rotateModel 10s infinite linear;
-        z-index: 2;
-      }
-
-      @keyframes rotateModel {
-        from {
-          transform: rotateY(0deg);
-        }
-        to {
-          transform: rotateY(360deg);
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <div class="glitter" id="glitter-container"></div>
-
-    <h2>Nailsalon</h2>
-
-    <model-viewer id="model-viewer"
-                  src="bluenails.glb"
-                  ios-src="bluenails.usdz"
-                  alt="bluenails"
-                  ar
-                  auto-rotate
-                  camera-controls
-                  ar-modes="webxr scene-viewer quick-look" 
-                  environment-image="neutral">
-    </model-viewer>
-
-    <script>
-      async function checkARCoreCompatibility() {
-          const modelViewer = document.getElementById('model-viewer');
-          const isARCoreSupported = await navigator.xr?.isSessionSupported('immersive-ar');
-          if (!isARCoreSupported) {
-              modelViewer.removeAttribute('ar');
-              modelViewer.removeAttribute('ar-modes');
-              alert('Your device is not compatible with AR features. You can still view the 3D model.');
-          }
-      }
-
-      document.addEventListener('DOMContentLoaded', () => {
-        checkARCoreCompatibility();
-
-        // Glitzer erzeugen
-        const glitterContainer = document.getElementById('glitter-container');
-        for (let i = 0; i < 100; i++) {
-          const sparkle = document.createElement('div');
-          sparkle.className = 'sparkle';
-          sparkle.style.left = Math.random() * 100 + 'vw';
-          sparkle.style.top = Math.random() * 100 + 'vh';
-          sparkle.style.animationDelay = Math.random() * 3 + 's';
-          glitterContainer.appendChild(sparkle);
-        }
-      });
-    </script>
-  </body>
+    });
+  </script>
+</body>
 </html>
-
