@@ -2,7 +2,7 @@
 <html lang="de">
   <head>
     <meta charset="UTF-8" />
-    <title>Model Viewer</title>
+    <title>Model Viewer mit AR</title>
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
     <style>
       #models-container {
@@ -40,13 +40,30 @@
         modelViewer.setAttribute('ios-src', file.usdz);
         modelViewer.setAttribute('alt', file.glb.split('.')[0]);
         modelViewer.setAttribute('ar', '');
+        modelViewer.setAttribute('ar-modes', 'webxr scene-viewer quick-look');
         modelViewer.setAttribute('auto-rotate', '');
         modelViewer.setAttribute('camera-controls', '');
-        modelViewer.setAttribute('ar-modes', 'webxr scene-viewer quick-look');
-        modelViewer.setAttribute(
-          'environment-image',
-          'https://modelviewer.dev/shared-assets/environments/spruit_sunrise_1k_HDR.hdr'
-        );
+        modelViewer.setAttribute('environment-image', 'https://modelviewer.dev/shared-assets/environments/spruit_sunrise_1k_HDR.hdr');
+        modelViewer.setAttribute('shadow-intensity', '1');
+        modelViewer.setAttribute('interaction-prompt', 'auto');
+
+        // Optional: AR-Button explizit anzeigen
+        const arButtonStyle = document.createElement('style');
+        arButtonStyle.textContent = `
+          model-viewer::part(ar-button) {
+            background-color: #3f51b5;
+            color: white;
+            border-radius: 4px;
+            padding: 8px 12px;
+            border: none;
+            font-size: 14px;
+            position: absolute;
+            bottom: 16px;
+            right: 16px;
+            z-index: 10;
+          }
+        `;
+        document.head.appendChild(arButtonStyle);
 
         container.appendChild(modelViewer);
       });
