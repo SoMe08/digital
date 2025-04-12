@@ -1,27 +1,24 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nailsalon</title>
-  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
-  <style>
-    model-viewer {
-      width: 100%;
-      max-width: 600px;
-      height: 400px;
-      margin-bottom: 20px;
-    }
-  </style>
-</head>
-<body>
-
-<h2>3D Modelle</h2>
-
 <div id="models-container"></div>
 
+<style>
+  #models-container {
+    display: flex;
+    overflow-x: auto;
+    gap: 20px;
+    padding: 20px;
+  }
+
+  model-viewer {
+    flex: 0 0 auto;
+    width: 300px;
+    height: 300px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  }
+</style>
+
 <script>
-  // Einfach hier die Dateinamen ohne Pfad eintragen:
   const modelFiles = [
     { glb: 'eins.glb', usdz: 'eins.usdz' },
     { glb: 'zwei.glb', usdz: 'zwei.usdz' },
@@ -39,26 +36,8 @@
     modelViewer.setAttribute('auto-rotate', '');
     modelViewer.setAttribute('camera-controls', '');
     modelViewer.setAttribute('ar-modes', 'webxr scene-viewer quick-look');
-    modelViewer.setAttribute('environment-image', 'neutral');
+    modelViewer.setAttribute('environment-image', 'https://modelviewer.dev/shared-assets/environments/spruit_sunrise_1k_HDR.hdr');
 
     container.appendChild(modelViewer);
   });
-
-  async function checkARCoreCompatibility() {
-    const isARCoreSupported = await navigator.xr?.isSessionSupported?.('immersive-ar');
-    if (!isARCoreSupported) {
-      document.querySelectorAll('model-viewer').forEach(modelViewer => {
-        modelViewer.removeAttribute('ar');
-        modelViewer.removeAttribute('ar-modes');
-      });
-      alert('Your device is not compatible with AR features. You can still view the 3D models.');
-    }
-  }
-
-  document.addEventListener('DOMContentLoaded', checkARCoreCompatibility);
 </script>
-
-</body>
-</html>
-
-
