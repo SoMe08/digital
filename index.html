@@ -1,192 +1,36 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en" dir="ltr">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Nailsalon</title>
-  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      overflow: hidden;
-      background: radial-gradient(ellipse at center, #ffeef3, #ffc0cb);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      position: relative;
-      font-family: 'Arial', sans-serif;
-    }
-
-    /* Schimmer & Glow Layer */
-    .shimmer-layer {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background-image: radial-gradient(circle, rgba(255,255,255,0.2) 1px, transparent 1px);
-      background-size: 3px 3px;
-      animation: shimmer 8s linear infinite;
-      opacity: 0.6;
-      z-index: 0;
-      pointer-events: none;
-    }
-
-    @keyframes shimmer {
-      0% { background-position: 0 0; }
-      100% { background-position: 100% 100%; }
-    }
-
-    .glow {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      background: radial-gradient(circle at 30% 40%, rgba(255,255,255,0.2), transparent 40%),
-                  radial-gradient(circle at 70% 60%, rgba(255,255,255,0.15), transparent 50%);
-      animation: glowMove 12s ease-in-out infinite alternate;
-      z-index: 0;
-    }
-
-    @keyframes glowMove {
-      0% { background-position: 30% 40%, 70% 60%; }
-      100% { background-position: 60% 30%, 40% 70%; }
-    }
-
-    /* Überschrift mit weichem Glow */
-    h2 {
-      position: absolute;
-      font-size: clamp(2rem, 5vw, 3em);
-      font-weight: bold;
-      color: #d63384;
-      text-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
-      z-index: 2;
-      animation: softPulse 2.5s infinite ease-in-out;
-    }
-
-    @keyframes softPulse {
-      0%, 100% {
-        opacity: 1;
-        text-shadow: 0 0 8px rgba(255,255,255,0.7);
-      }
-      50% {
-        opacity: 0.85;
-        text-shadow: 0 0 16px rgba(255,255,255,0.9);
-      }
-    }
-
-    /* Model-Viewer */
-    model-viewer {
-      width: 80vw;
-      max-width: 500px;
-      height: auto;
-      aspect-ratio: 1;
-      animation: rotateModel 10s infinite linear;
-      z-index: 2;
-    }
-
-    @keyframes rotateModel {
-      from { transform: rotateY(0deg); }
-      to { transform: rotateY(360deg); }
-    }
-
-    /* SVG Herzchen */
-    .hearts-container {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      z-index: 1;
-      pointer-events: none;
-    }
-
-    .heart {
-      position: absolute;
-      width: 24px;
-      height: 24px;
-      opacity: 0.6;
-      animation: floatHeart 12s linear infinite;
-      transform-origin: center;
-    }
-
-    @keyframes floatHeart {
-      0% {
-        transform: translateY(100vh) scale(0.5) rotate(0deg);
-        opacity: 0;
-      }
-      30% {
-        opacity: 0.7;
-      }
-      100% {
-        transform: translateY(-10vh) scale(1.2) rotate(360deg);
-        opacity: 0;
-      }
-    }
-  </style>
-</head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tito's cave AR Test</title>
+<script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+  </head>
 <body>
-  <!-- Schimmer & Glanz -->
-  <div class="shimmer-layer"></div>
-  <div class="glow"></div>
+<H2>Tito's cave AR Test</H2>
+<model-viewer src="titos-cave.glb"
+ios-src="titos-cave.usdz"
+alt="Titos Cave"
+ar
+auto-rotate
+camera-controls
+ar-modes="webxr scene-viewer quick-look"
+environment-image="neutral">
+</model-viewer>
+<script>
+async function checkARCoreCompatibility() {
+const modelViewer = document.getElementById('model-viewer');
+const isARCoreSupported = await navigator.xr.isSessionSupported('immersive-ar');
+if (!isARCoreSupported) {
+modelViewer.removeAttribute('ar');
+modelViewer.removeAttribute('ar-modes');
+alert('Your device is not compatible with AR features. You can still view the 3D model.');
+}
+}
 
-  <!-- Funkelnde Herzchen -->
-  <div class="hearts-container" id="hearts-container"></div>
+    document.addEventListener('DOMContentLoaded', checkARCoreCompatibility);  
+</script>  
 
-  <h2>Nailsalon</h2>
-
-  <model-viewer id="model-viewer"
-                src="bluenails.glb"
-                ios-src="bluenails.usdz"
-                alt="bluenails"
-                ar
-                auto-rotate
-                camera-controls
-                ar-modes="webxr scene-viewer quick-look"
-                environment-image="neutral">
-  </model-viewer>
-
-  <script>
-    async function checkARCoreCompatibility() {
-      const modelViewer = document.getElementById('model-viewer');
-      try {
-        const isARCoreSupported = await navigator.xr?.isSessionSupported('immersive-ar');
-        if (!isARCoreSupported) {
-          modelViewer.removeAttribute('ar');
-          modelViewer.removeAttribute('ar-modes');
-        }
-      } catch (e) {
-        console.warn("AR-Kompatibilitätsprüfung nicht möglich:", e);
-      }
-    }
-
-    // Herz-Generator
-    function createHearts() {
-      const container = document.getElementById('hearts-container');
-      const colors = ['#fff', '#ffb6c1', '#ff69b4'];
-
-      for (let i = 0; i < 30; i++) {
-        const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-        svg.setAttribute("viewBox", "0 0 24 24");
-        svg.classList.add("heart");
-        svg.style.left = Math.random() * 100 + 'vw';
-        svg.style.top = Math.random() * 100 + 'vh';
-        svg.style.animationDelay = Math.random() * 10 + 's';
-        svg.style.fill = colors[Math.floor(Math.random() * colors.length)];
-        svg.innerHTML = `
-          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5
-          2 5.42 4.42 3 7.5 3c1.74 0 3.41 1.01 4.5 2.09
-          C13.09 4.01 14.76 3 16.5 3
-          19.58 3 22 5.42 22 8.5
-          c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-        `;
-        container.appendChild(svg);
-      }
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-      checkARCoreCompatibility();
-      createHearts();
-    });
-  </script>
 </body>
 </html>
+
