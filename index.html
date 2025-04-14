@@ -5,29 +5,62 @@
     <title>Model Viewer mit AR</title>
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
     <style>
+      /* 💅 Fancy Headline Style */
       .headline {
         font-family: cursive;
-        font-size: 48px;
+        font-size: 64px;
         color: #e91e63;
         text-align: center;
         margin-top: 40px;
+        text-shadow: 0 0 10px #e91e63, 0 0 20px #f8bbd0;
+        animation: pulse 3s infinite ease-in-out;
       }
 
+      /* ✨ Pulse-Animation */
+      @keyframes pulse {
+        0%, 100% {
+          text-shadow: 0 0 10px #e91e63, 0 0 20px #f8bbd0;
+        }
+        50% {
+          text-shadow: 0 0 20px #ec407a, 0 0 30px #f48fb1;
+        }
+      }
+
+      /* 🧱 Layout für Modelle */
       #models-container {
         display: flex;
         justify-content: center;
         flex-wrap: wrap;
-        gap: 20px;
+        gap: 40px;
         padding: 20px;
       }
 
+      /* 🖼️ Größere Modelle mit Hover-Zoom */
       model-viewer {
-        width: 300px;
-        height: 300px;
+        width: 400px;
+        height: 400px;
         background-color: white;
-        border-radius: 10px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 20px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
         opacity: 1 !important;
+      }
+
+      model-viewer:hover {
+        transform: scale(1.05);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25);
+      }
+
+      /* 📱 Responsiv */
+      @media (max-width: 500px) {
+        model-viewer {
+          width: 300px;
+          height: 300px;
+        }
+
+        .headline {
+          font-size: 48px;
+        }
       }
     </style>
   </head>
@@ -51,34 +84,31 @@
         modelViewer.setAttribute('alt', file.glb.split('.')[0]);
         modelViewer.setAttribute('ar', '');
         modelViewer.setAttribute('ar-modes', 'webxr scene-viewer quick-look');
-        modelViewer.setAttribute('auto-rotate', '');
         modelViewer.setAttribute('camera-controls', '');
         modelViewer.setAttribute('environment-image', 'https://modelviewer.dev/shared-assets/environments/spruit_sunrise_1k_HDR.hdr');
         modelViewer.setAttribute('shadow-intensity', '1');
         modelViewer.setAttribute('interaction-prompt', 'auto');
 
-        // Wenn Modell geladen ist, 360° Rotation & Material-Transparenz entfernen
+        // Nach dem Laden: Kamera rotieren & Material fixen
         modelViewer.addEventListener('load', () => {
-          // Kamera drehen
           modelViewer.cameraOrbit = '360deg 75deg 2.5m';
 
-          // Material durchgehen & Transparenz deaktivieren (falls möglich)
           const materials = modelViewer.model?.materials;
           if (materials) {
             materials.forEach(mat => {
               if (mat.pbrMetallicRoughness?.baseColorFactor) {
-                mat.pbrMetallicRoughness.baseColorFactor[3] = 1.0; // Alpha auf 1
+                mat.pbrMetallicRoughness.baseColorFactor[3] = 1.0;
               }
               mat.alphaMode = 'OPAQUE';
             });
           }
         });
 
-        // Optional: Style für AR-Button
+        // Optional: AR-Button Styling
         const arButtonStyle = document.createElement('style');
         arButtonStyle.textContent = `
           model-viewer::part(ar-button) {
-            background-color: #3f51b5;
+            background-color: #e91e63;
             color: white;
             border-radius: 4px;
             padding: 8px 12px;
