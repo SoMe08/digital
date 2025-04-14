@@ -27,6 +27,7 @@
         background-color: white;
         border-radius: 10px;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        opacity: 1 !important;
       }
     </style>
   </head>
@@ -56,12 +57,24 @@
         modelViewer.setAttribute('shadow-intensity', '1');
         modelViewer.setAttribute('interaction-prompt', 'auto');
 
-        // Set camera orbit on load to rotate model
+        // Wenn Modell geladen ist, 360° Rotation & Material-Transparenz entfernen
         modelViewer.addEventListener('load', () => {
+          // Kamera drehen
           modelViewer.cameraOrbit = '360deg 75deg 2.5m';
+
+          // Material durchgehen & Transparenz deaktivieren (falls möglich)
+          const materials = modelViewer.model?.materials;
+          if (materials) {
+            materials.forEach(mat => {
+              if (mat.pbrMetallicRoughness?.baseColorFactor) {
+                mat.pbrMetallicRoughness.baseColorFactor[3] = 1.0; // Alpha auf 1
+              }
+              mat.alphaMode = 'OPAQUE';
+            });
+          }
         });
 
-        // Optional: Style for AR button
+        // Optional: Style für AR-Button
         const arButtonStyle = document.createElement('style');
         arButtonStyle.textContent = `
           model-viewer::part(ar-button) {
@@ -84,4 +97,3 @@
     </script>
   </body>
 </html>
-
