@@ -1,147 +1,147 @@
 <!DOCTYPE html>
 <html lang="de">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Model Viewer mit AR</title>
-    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
-    <style>
+<head>
+  <meta charset="UTF-8" />
+  <title>Model Viewer mit AR</title>
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+  <style>
+    /* Grund-Styles */
+    html, body {
+      background-color: black;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      font-family: sans-serif;
+    }
 
-      html, body {
-       background-color: black;
-       margin: 0;
-       padding: 0;
-       min-height: 100vh;
-}
-      /* Headline Style */ 
-      .headline {
-        font-family: cursive;
-        font-size: 112px;         
-        color: #FFFFFF;
-        text-align: center;
-        margin-top: 60px;
-        text-shadow: 0 0 10px #e91e63, 0 0 20px #f8bbd0;
-        animation: pulse 2s infinite ease-in-out;
-      }
-      /* ✨ Pulse-Animation */
-      @keyframes pulse {
-        0%, 100% {
-          text-shadow: 0 0 10px #e91e63, 0 0 20px #f8bbd0;
-        }
-        50% {
-          text-shadow: 0 0 20px #ec407a, 0 0 30px #f48fb1;
-        }
-       #models-wrapper {
-        width: 100%;
-        display: flex;
-        justify-content: center;
-       }
+    /* Überschrift */
+    .headline {
+      font-family: cursive;
+      font-size: 100px;         
+      color: #FFFFFF;
+      text-align: center;
+      margin: 60px auto;
+      text-shadow: 0 0 10px #e91e63, 0 0 20px #f8bbd0;
+      animation: pulse 2s infinite ease-in-out;
+    }
 
-      /* 🧱 Layout für Modelle */
-      #models-container {
+    @keyframes pulse {
+      0%, 100% { text-shadow: 0 0 10px #e91e63, 0 0 20px #f8bbd0; }
+      50% { text-shadow: 0 0 20px #ec407a, 0 0 30px #f48fb1; }
+    }
+
+    /* Wrapper zentriert den Container */
+    #models-wrapper {
+      width: 100%;
       display: flex;
-      flex-direction: column;
-      align-items: center;   /* zentriert die Modelle */
-      gap: 150px;            /* Abstand zwischen Modellen */
-      padding: 40px;
-     }
-    
+      justify-content: center;
+    }
 
-      /* 🖼️ Größere Modelle mit Hover-Zoom */
-      model-viewer {
-      width: 90vw;          /* passt sich Bildschirmbreite an */
-      max-width: 650px;     /* Desktop Limit */
+    /* Container für die Modelle */
+    #models-container {
+      display: flex;
+      flex-direction: column;   /* Modelle untereinander */
+      align-items: center;      /* horizontal zentriert */
+      gap: 150px;               /* Abstand zwischen Modellen */
+      width: 100%;
+      max-width: 700px;         /* Limit für Desktop */
+      padding: 40px;
+      margin: 0 auto;
+    }
+
+    /* Model-Viewer Styles */
+    model-viewer {
+      width: 90%;          /* fast volle Breite des Containers */
+      max-width: 650px;
       height: 70vh;
       max-height: 600px;
       display: block;
-      margin: 0 auto;       /* zentriert jedes Modell */
+      margin: 0 auto;      /* horizontal zentriert */
       background-color: transparent;
       border-radius: 40px;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
       opacity: 1;
-       }
+    }
 
-      model-viewer:hover {
-        transform: scale(1.05);
-        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25);
-      }
+    /* Hover Effekt */
+    model-viewer:hover {
+      transform: scale(1.05);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25);
+    }
 
-      /* 📱 Responsiv */
-      @media (max-width: 500px)      
-          model-viewer {
-          width: 300px;
-          height: 300px;
-        }
-        .headline {
-          font-size: 48px;
-        }
+    /* AR Button Styling */
+    model-viewer::part(ar-button) {
+      background-color: #e91e63;
+      color: white;
+      border-radius: 4px;
+      padding: 8px 12px;
+      border: none;
+      font-size: 14px;
+      position: absolute;
+      bottom: 16px;
+      right: 16px;
+      z-index: 10;
+    }
+
+    /* Responsive für Handy */
+    @media (max-width: 600px) {
+      model-viewer {
+        width: 95vw;
+        height: 60vh;
       }
-    </style>
-  </head>
-  <body>
-    <h1 class="headline">Virtual Extensions</h1>
+      .headline {
+        font-size: 48px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1 class="headline">Virtual Extensions</h1>
+
+  <div id="models-wrapper">
     <div id="models-container"></div>
-     <div id="models-wrapper">
-     <!-- Container für die Modelle -->
-      <div id="models-container">
- </div>
-    <script>
-      const modelFiles = [
-        { glb: 'eins.glb', usdz: 'eins.usdz' },
-        { glb: 'zwei.glb', usdz: 'zwei.usdz' },
-        { glb: 'drei.glb', usdz: 'drei.usdz' }
-      ];
+  </div>
 
-      const container = document.getElementById('models-container');
+  <script>
+    const modelFiles = [
+      { glb: 'eins.glb', usdz: 'eins.usdz' },
+      { glb: 'zwei.glb', usdz: 'zwei.usdz' },
+      { glb: 'drei.glb', usdz: 'drei.usdz' }
+    ];
 
-      modelFiles.forEach(file => {
-        const modelViewer = document.createElement('model-viewer');
-        modelViewer.setAttribute('src', file.glb);
-        modelViewer.setAttribute('ios-src', file.usdz);
-        modelViewer.setAttribute('alt', file.glb.split('.')[0]);
-        modelViewer.setAttribute('ar', '');
-        modelViewer.setAttribute('ar-modes', 'webxr scene-viewer quick-look');
-        modelViewer.setAttribute('camera-controls', '');
-        modelViewer.setAttribute('tone-mapping', 'aces');
-        modelViewer.setAttribute('exposure', '1.1');        // hellere Darstellung
-        modelViewer.setAttribute('shadow-intensity', '0.6'); // weichere Schatten
-        modelViewer.setAttribute('auto-rotate', '');         // optional: Modelle drehen sich automatisch
-        modelViewer.setAttribute('interaction-prompt', 'auto');
+    const container = document.getElementById('models-container');
 
-        // Nach dem Laden: Kamera rotieren & Material fixen
-        modelViewer.addEventListener('load', () => { 
-        modelViewer.cameraOrbit = '360deg 75deg 2.5m';
-          
-          const materials = modelViewer.model?.materials;
-          if (materials) {
-            materials.forEach(mat => {
-              if (mat.pbrMetallicRoughness?.baseColorFactor) {
-                mat.pbrMetallicRoughness.baseColorFactor[3] = 1.0;
-              }
-              mat.alphaMode = 'OPAQUE';
-            });
-          }
-        });
+    modelFiles.forEach(file => {
+      const modelViewer = document.createElement('model-viewer');
+      modelViewer.setAttribute('src', file.glb);
+      modelViewer.setAttribute('ios-src', file.usdz);
+      modelViewer.setAttribute('alt', file.glb.split('.')[0]);
+      modelViewer.setAttribute('ar', '');
+      modelViewer.setAttribute('ar-modes', 'webxr scene-viewer quick-look');
+      modelViewer.setAttribute('camera-controls', '');
+      modelViewer.setAttribute('environment-image', 'neutral');  // Farben sichtbar
+      modelViewer.setAttribute('tone-mapping', 'aces');
+      modelViewer.setAttribute('exposure', '1.3');
+      modelViewer.setAttribute('scale', '5 5 5');  // Modelle größer
+      modelViewer.setAttribute('shadow-intensity', '0.6');
+      modelViewer.setAttribute('auto-rotate', '');
+      modelViewer.setAttribute('interaction-prompt', 'auto');
 
-        // Optional: AR-Button Styling
-        const arButtonStyle = document.createElement('style');
-        arButtonStyle.textContent = `
-          model-viewer::part(ar-button) {
-            background-color: #e91e63;
-            color: white;
-            border-radius: 4px;
-            padding: 8px 12px;
-            border: none;
-            font-size: 16px;
-            position: absolute;
-            bottom: 16px;
-            right: 16px;
-            z-index: 10;
-          }
-        `;
-        document.head.appendChild(arButtonStyle);
-
-        container.appendChild(modelViewer);
+      // Material Fix (falls Alpha falsch ist)
+      modelViewer.addEventListener('load', () => {
+        const materials = modelViewer.model?.materials;
+        if (materials) {
+          materials.forEach(mat => {
+            if (mat.pbrMetallicRoughness?.baseColorFactor) {
+              mat.pbrMetallicRoughness.baseColorFactor[3] = 1.0;
+            }
+            mat.alphaMode = 'OPAQUE';
+          });
+        }
       });
-    </script>
-  </body>
+
+      container.appendChild(modelViewer);
+    });
+  </script>
+</body>
 </html>
