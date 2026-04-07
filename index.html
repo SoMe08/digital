@@ -43,13 +43,17 @@
 
       /* 🖼️ Größere Modelle mit Hover-Zoom */
       model-viewer {
-        width: 600px;
-        height: 550px;
-        background-color: transparent;
-        border-radius: 40px;       
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        opacity: 1;
-      }
+      width: 90vw;          /* passt sich Bildschirmbreite an */
+      max-width: 650px;     /* Desktop Limit */
+      height: 70vh;
+      max-height: 600px;
+      display: block;
+      margin: 0 auto;       /* zentriert jedes Modell */
+      background-color: transparent;
+      border-radius: 40px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      opacity: 1;
+       }
 
       model-viewer:hover {
         transform: scale(1.05);
