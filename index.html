@@ -96,10 +96,8 @@
         modelViewer.setAttribute('interaction-prompt', 'auto');
 
         // Nach dem Laden: Kamera rotieren & Material fixen
-        modelViewer.addEventListener('load', () => {
+        modelViewer.addEventListener('load', () => { 
         modelViewer.cameraOrbit = '360deg 75deg 2.5m';
-        modelViewer.cameraTarget = '0m 0m 0m';
-        modelViewer.fieldOfView = '30deg';
           
           const materials = modelViewer.model?.materials;
           if (materials) {
