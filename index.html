@@ -64,21 +64,25 @@
       margin: 0 auto;
     }
 
-    #background-text {
+   #background-text {
     position: absolute;          /* hinter den Modellen */
-    top: 20%;                     /* Abstand vom oberen Rand */
-    left: 50%;                    /* zentriert */
-    transform: translateX(-50%);  /* horizontal zentrieren */
-    font-size: 32px;              /* Schriftgröße des Blocks */
-    color: #FFFFFF;               /* reines Weiß */
-    z-index: 1;                   /* unter Überschrift & Modellen */
-    pointer-events: none;         /* klickbar bleiben Modelle/Buttons */
-    user-select: none;            /* Text nicht markierbar */
-    line-height: 1.5;             /* Zeilenabstand */
-    text-align: center;           /* Text zentrieren */
-    max-width: 80%;        /* Text nicht markierbar */
-    opacity: 1;    
-
+    top: 200px;                  /* beginnt unter der Überschrift */
+    left: 0;
+    width: 100%;                 /* gesamte Breite */
+    bottom: 0;                   /* geht bis zum unteren Rand */
+    padding: 20px 40px;          /* Abstand innen */
+    box-sizing: border-box;
+    font-size: 32px;
+    color: rgba(255, 255, 255, 0.25); /* leicht transparent, sichtbar */
+    z-index: 1;                  /* unter Überschrift & Modellen */
+    pointer-events: none;        /* klickbar bleiben Modelle/Buttons */
+    user-select: none;           /* Text nicht markierbar */
+    line-height: 1.5;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* Text blockmäßig von oben */
+    white-space: pre-wrap;       /* Zeilenumbruch */
  }
     
     /* Model-Viewer Styles */
