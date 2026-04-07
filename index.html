@@ -37,7 +37,7 @@
         display: flex;
         justify-content: center;
         flex-wrap: wrap;
-        gap: 40px;
+        gap: 120px;
         padding: 20px;
       }
 
@@ -89,11 +89,10 @@
         modelViewer.setAttribute('ar', '');
         modelViewer.setAttribute('ar-modes', 'webxr scene-viewer quick-look');
         modelViewer.setAttribute('camera-controls', '');
-        modelViewer.setAttribute('environment-image', 'https://modelviewer.dev/shared-assets/environments/spruit_sunrise_1k_HDR.hdr');
-        modelViewer.setAttribute('exposure', '1.5');        // hellere Darstellung
-        modelViewer.setAttribute('shadow-intensity', '0.3'); // weichere Schatten
+        modelViewer.setAttribute('environment-image', 'neutral') ;
+        modelViewer.setAttribute('exposure', '1');        // hellere Darstellung
+        modelViewer.setAttribute('shadow-intensity', '0.8'); // weichere Schatten
         modelViewer.setAttribute('auto-rotate', '');         // optional: Modelle drehen sich automatisch
-        modelViewer.setAttribute('shadow-intensity', '1');
         modelViewer.setAttribute('interaction-prompt', 'auto');
 
         // Nach dem Laden: Kamera rotieren & Material fixen
