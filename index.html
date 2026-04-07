@@ -38,7 +38,7 @@
         justify-content: center;
         flex-wrap: wrap;
         gap: 120px;
-        padding: 20px;
+        padding: 50px;
       }
 
       /* 🖼️ Größere Modelle mit Hover-Zoom */
@@ -89,7 +89,7 @@
         modelViewer.setAttribute('ar', '');
         modelViewer.setAttribute('ar-modes', 'webxr scene-viewer quick-look');
         modelViewer.setAttribute('camera-controls', '');
-        modelViewer.setAttribute('environment-image', 'neutral') ;
+        modelViewer.setAttribute('tone-mapping', 'aces');
         modelViewer.setAttribute('exposure', '1');        // hellere Darstellung
         modelViewer.setAttribute('shadow-intensity', '0.8'); // weichere Schatten
         modelViewer.setAttribute('auto-rotate', '');         // optional: Modelle drehen sich automatisch
@@ -119,7 +119,7 @@
             border-radius: 4px;
             padding: 8px 12px;
             border: none;
-            font-size: 14px;
+            font-size: 16px;
             position: absolute;
             bottom: 16px;
             right: 16px;
