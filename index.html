@@ -57,28 +57,26 @@
       margin: 0 auto;
     }
 
-   #background-text {
+ #background-text {
     position: absolute;          /* hinter den Modellen */
-    top: 200px;                  /* unter der Überschrift */
+    top: 200px;                  /* beginnt unter der Überschrift */
     left: 0;
-    width: 100%;                 /* ganze Breite */
-    bottom: 0;                   /* bis unten */
-    padding: 20px 40px;          /* Innenabstand */
+    width: 100%;                 /* gesamte Breite */
+    bottom: 0;                   /* geht bis zum unteren Rand */
+    padding: 20px 40px;          /* Abstand innen */
     box-sizing: border-box;
-    font-size: 40px;             /* etwas kleiner für Blocksatz */
-    color: rgba(255, 255, 255, 0.3); /* leicht transparent */
-    z-index: 1;                  /* hinter Modellen & Überschrift */
-    pointer-events: none;
-    user-select: none;
-    line-height: 1.6;            /* schöner Zeilenabstand */
-    text-align: justify;          /* DER Blocksatz */
+    font-size: 32px;
+    color: rgba(255, 255, 255, 0.25); /* leicht transparent, sichtbar */
+    z-index: 1;                  /* unter Überschrift & Modellen */
+    pointer-events: none;        /* klickbar bleiben Modelle/Buttons */
+    user-select: none;           /* Text nicht markierbar */
+    line-height: 1.5;
+    text-align: center;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start; /* Text läuft von oben */
-    white-space: pre-wrap; 
-    text-justify: inter-word;/* Zeilenumbruch */
-}
-    
+    justify-content: flex-start; /* Text blockmäßig von oben */
+    white-space: pre-wrap;  
+   }  
     /* Model-Viewer Styles */
     model-viewer {
       width: 90%;          /* fast volle Breite des Containers */
