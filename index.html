@@ -5,6 +5,16 @@
   <meta charset="UTF-8" />
   <title>Model Viewer mit AR</title>
   <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+ <div id="background-text">Erklärung zu den Modellen</div>
+
+ <h1 class="headline">Virtual Extensions</h1>
+
+ <div id="models-wrapper">
+  <div id="models-container">
+    <!-- model-viewer-Elemente per JS eingefügt -->
+   </div>
+ </div>
+  
   <style>
     /* Grund-Styles */
     html, body {
@@ -50,6 +60,19 @@
       margin: 0 auto;
     }
 
+    #background-text {
+    position: absolute;        /* liegt hinter Modellen */
+    top: 50%;                  /* vertikal zentriert */
+    left: 50%;                 /* horizontal zentriert */
+    transform: translate(-50%, -50%);
+    font-size: 120px;          /* sehr groß */
+    color: rgba(255,255,255,0.05); /* sehr transparentes Weiß */
+    white-space: nowrap;
+    pointer-events: none;      /* klickbar bleiben die Modelle/Buttons */
+    z-index: 1;                /* unter Überschrift & Modellen */
+    user-select: none;         /* Text nicht markierbar */
+}
+    
     /* Model-Viewer Styles */
     model-viewer {
       width: 90%;          /* fast volle Breite des Containers */
