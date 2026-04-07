@@ -90,15 +90,17 @@
         modelViewer.setAttribute('ar-modes', 'webxr scene-viewer quick-look');
         modelViewer.setAttribute('camera-controls', '');
         modelViewer.setAttribute('tone-mapping', 'aces');
-        modelViewer.setAttribute('exposure', '1');        // hellere Darstellung
-        modelViewer.setAttribute('shadow-intensity', '0.8'); // weichere Schatten
+        modelViewer.setAttribute('exposure', '1.1');        // hellere Darstellung
+        modelViewer.setAttribute('shadow-intensity', '0.6'); // weichere Schatten
         modelViewer.setAttribute('auto-rotate', '');         // optional: Modelle drehen sich automatisch
         modelViewer.setAttribute('interaction-prompt', 'auto');
 
         // Nach dem Laden: Kamera rotieren & Material fixen
         modelViewer.addEventListener('load', () => {
-          modelViewer.cameraOrbit = '360deg 75deg 2.5m';
-
+        modelViewer.cameraOrbit = '0deg 90deg 0.8m';
+        modelViewer.cameraTarget = '0m 0m 0m';
+        modelViewer.fieldOfView = '30deg';
+          
           const materials = modelViewer.model?.materials;
           if (materials) {
             materials.forEach(mat => {
