@@ -128,19 +128,24 @@
       modelViewer.setAttribute('auto-rotate', '');
       modelViewer.setAttribute('interaction-prompt', 'auto');
 
-      // Material Fix (falls Alpha falsch ist)
       modelViewer.addEventListener('load', () => {
-        const materials = modelViewer.model?.materials;
-        if (materials) {
-          materials.forEach(mat => {
-            if (mat.pbrMetallicRoughness?.baseColorFactor) {
-              mat.pbrMetallicRoughness.baseColorFactor[3] = 1.0;
-            }
-            mat.alphaMode = 'OPAQUE';
-          });
-        }
-      });
-
+      const materials = modelViewer.model?.materials;
+      if (materials) {
+      materials.forEach(mat => {
+      if (mat.pbrMetallicRoughness?.baseColorFactor) {
+        mat.pbrMetallicRoughness.baseColorFactor[3] = 1.0; // Sichtbarkeit
+      }
+      mat.alphaMode = 'OPAQUE'; // verhindert transparente “Negativ”-Effekte
+      // Falls Metallik zu stark -> optional reduzieren
+      if (mat.pbrMetallicRoughness?.metallicFactor !== undefined) {
+        mat.pbrMetallicRoughness.metallicFactor = 0.5; // weniger grell
+      }
+      if (mat.pbrMetallicRoughness?.roughnessFactor !== undefined) {
+        mat.pbrMetallicRoughness.roughnessFactor = 0.5; // sanfter
+      }
+    });
+  }
+});
       container.appendChild(modelViewer);
     });
   </script>
